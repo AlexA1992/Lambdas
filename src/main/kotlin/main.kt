@@ -184,8 +184,8 @@ fun main() {
 //    println("----------------------")
 //    messages.deleteMessage(5)
 //
-//    println("----------------------")
-//    chats.printAllChats(allChats)
+    println("----------------------")
+    chats.printAllChats(allChats)
 //
 //    // распечатать чат по id сообщения и количество сообщений
 //    println("----------------------")
