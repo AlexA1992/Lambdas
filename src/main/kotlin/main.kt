@@ -1,16 +1,21 @@
 import chats.allChats
-import messages.allMessages
 
 data class Message(
-    val id: Int, val userId: Int, var seen: Boolean, var text: String
+    var id: Int,
+    val userId: Int,
+    var seen: Boolean,
+    var text: String
 )
 
 class Chat(
-    val id: Int, val userId: Int, val itsMessages: MutableList<Message>
+    val id: Int,
+    val userId: Int,
+    val itsMessages: MutableList<Message>
 )
 
 object chats {
     val allChats = mutableListOf<Chat>()
+    val allMessages = mutableListOf<Message>()
 
     // создать чат
     fun createChat(message: Message, chats: MutableList<Chat>): Chat {
@@ -59,28 +64,39 @@ object chats {
         }
         println(unreadChatsQuant)
     }
-}
 
-object messages {
-    val allMessages = mutableListOf<Message>()
+
+//object messages {
+//    val allMessages = mutableListOf<Message>()
 
     //удаляем сообщение по id и, если оно последнее, то весь чат тоже
     fun deleteMessage(messageId: Int) {
-        println("Удаляем сообщение по Id")
+        println("Это сообщения до удаления")
+        chats.printAllMessages(chats.allMessages)
+        //сначала убираем из перечьня сообщений allMesseges
+        for(mes in chats.allMessages){
+            if(mes.id == messageId){
+                chats.allMessages.remove(mes)
+                break
+            }
+        }
         val chatsIterator = chats.allChats.iterator()
         while (chatsIterator.hasNext()) {
-            val checkigChat = chatsIterator.next()
-            val chekingMessage: MutableList<Message> = checkigChat.itsMessages
+            val checkingChat = chatsIterator.next()
+            val checkingMessage: MutableList<Message> = checkingChat.itsMessages
             val messagesToDelete: MutableList<Message> =
-                chekingMessage.filter { it.id == messageId } as MutableList<Message>
+                checkingMessage.filter { it.id == messageId } as MutableList<Message>
             if (!messagesToDelete.isEmpty()) {
                 val messageToDelete: Message? = messagesToDelete.get(0)
-                println(chekingMessage)
-                chekingMessage.remove(messageToDelete)
+                println("Удаляем сообщение с ID = $messageId")
+                println(checkingMessage)
+                checkingMessage.remove(messageToDelete)
                 println("************")
                 //проверяем удалено ли сообщение
-                println(chekingMessage)
-                if (checkigChat.itsMessages.isEmpty()) chats.deleteChat(checkigChat)
+                println(checkingMessage)
+                if (checkingChat.itsMessages.isEmpty()) chats.deleteChat(checkingChat)
+                println("Это сообщения после удаления")
+                chats.printAllMessages(chats.allMessages)
                 break
             }
             continue
@@ -145,6 +161,7 @@ object messages {
         }
     }
 }
+//}
 
 fun main() {
     val message1 = Message(1, 1, false, "first message")
@@ -154,45 +171,43 @@ fun main() {
     val message5 = Message(5, 3, true, "fifth message")
     val message6 = Message(6, 4, true, "sixth message")
     val message7 = Message(7, 4, false, "seventh message")
-    messages.addMessageToChat(message1)
-    messages.addMessageToChat(message2)
-    messages.addMessageToChat(message3)
-    messages.addMessageToChat(message4)
-    messages.addMessageToChat(message5)
-    messages.addMessageToChat(message6)
-    messages.addMessageToChat(message7)
+    chats.addMessageToChat(message1)
+    chats.addMessageToChat(message2)
+    chats.addMessageToChat(message3)
+    chats.addMessageToChat(message4)
+    chats.addMessageToChat(message5)
+    chats.addMessageToChat(message6)
+    chats.addMessageToChat(message7)
 
     println("----------------------")
     chats.printAllChats(allChats)
-//    println("----------------------")
-//    messages.printAllMessages(allMessages)
-//    println("----------------------")
-//    messages.printUnseenMessages(allMessages)
+    println("----------------------")
+    chats.printAllMessages(chats.allMessages)
+    println("----------------------")
+    chats.printUnseenMessages(chats.allMessages)
 
     // удаляем первый чат, где хранятся message1 и message2
-//    chats.deleteChat(chats.allChats.get(0))
-//    println("----------------------")
-//    chats.printAllChats(allChats)
-//    println("----------------------")
-//    messages.deleteMessage(1)
-//    println("----------------------")
-//    messages.printAllMessages(allMessages)
-//    println("----------------------")
-//    chats.printAllChats(allChats)
-//
-//    //удаляем сообщение с id = 5
-//    println("----------------------")
-//    messages.deleteMessage(5)
-//
+    chats.deleteChat(chats.allChats.get(0))
     println("----------------------")
     chats.printAllChats(allChats)
-//
-//    // распечатать чат по id сообщения и количество сообщений
-//    println("----------------------")
-//    messages.printAllMessagesOfChatByMessageId(allChats, 7)
+    println("----------------------")
+    chats.deleteMessage(1)
+    println("----------------------")
+    chats.printAllMessages(chats.allMessages)
+    println("----------------------")
+    chats.printAllChats(allChats)
+
+    //удаляем сообщение с id = 5
+    println("----------------------")
+    chats.deleteMessage(5)
+
+    println("----------------------")
+    chats.printAllChats(allChats)
+
+    // распечатать чат по id сообщения и количество сообщений
+    println("----------------------")
+    chats.printAllMessagesOfChatByMessageId(allChats, 7)
 
     // распечатать все чаты где есть непрочитанные сообщения
     chats.printAllChatsWithUnreadMessages(allChats)
-
-
 }

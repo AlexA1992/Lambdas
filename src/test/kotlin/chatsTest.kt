@@ -5,27 +5,48 @@ import org.junit.Assert.*
 class chatsTest {
 
     @Test
-    fun printAllChats() {
-//arrange
+    fun createChat() {
+        //arrange
+        val message1 = Message(1, 1, false, "first message")
+        //act
+        val startChats = chats.allChats.size
+        chats.addMessageToChat(message1)
+        val finishChats = chats.allChats.size
+        //assert
+        assertEquals(finishChats > startChats, true)
+    }
+
+    @Test
+    fun deleteChat() {
+        //arrange
+        val message1 = Message(1, 1, false, "first message")
+        chats.addMessageToChat(message1)
+        val startChats = chats.allChats.size
+        //act
+        chats.deleteChat(chats.allChats.get(0))
+        val finishChats = chats.allChats.size
+        //assert
+        assertEquals(finishChats < startChats, true)
+    }
+
+    @Test
+    fun deleteMessage() {
+        //arrange
         val message1 = Message(1, 1, false, "first message")
         val message2 = Message(2, 1, true, "second message")
         val message3 = Message(3, 2, false, "third message")
-        val message4 = Message(4, 2, false, "forth message")
-        val message5 = Message(5, 3, true, "fifth message")
-        val message6 = Message(6, 4, true, "sixth message")
-        val message7 = Message(7, 4, false, "seventh message")
-        messages.addMessageToChat(message1)
-        messages.addMessageToChat(message2)
-        messages.addMessageToChat(message3)
-        messages.addMessageToChat(message4)
-        messages.addMessageToChat(message5)
-        messages.addMessageToChat(message6)
-        messages.addMessageToChat(message7)
-        val allChats = mutableListOf<Chat>()
+        chats.addMessageToChat(message1)
+        chats.addMessageToChat(message2)
+        chats.addMessageToChat(message3)
+        val startMes = chats.allMessages.size
+        println(chats.allMessages)
         //act
-        val result = chats.printAllChats(allChats)
-
+        chats.deleteMessage(3)
+        val finishMes = chats.allMessages.size
+        println(chats.allMessages)
         //assert
-        assertEquals(chats.printAllChats(allChats), result)
+        assertEquals(finishMes < startMes, true)
     }
+
+
 }
