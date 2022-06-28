@@ -179,7 +179,7 @@ fun main() {
     chats.addMessageToChat(message6)
     chats.addMessageToChat(message7)
 
-    println("----------------------")
+    println("------------------------")
     chats.printAllChats(allChats)
     println("----------------------")
     chats.printAllMessages(chats.allMessages)

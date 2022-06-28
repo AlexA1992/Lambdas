@@ -8,9 +8,15 @@ class chatsTest {
     fun createChat() {
         //arrange
         val message1 = Message(1, 1, false, "first message")
+        val message2 = Message(2, 1, true, "second message")
+        val message3 = Message(3, 2, false, "third message")
+        val message4 = Message(4, 2, false, "forth message")
         //act
         val startChats = chats.allChats.size
         chats.addMessageToChat(message1)
+        chats.addMessageToChat(message2)
+        chats.addMessageToChat(message3)
+        chats.addMessageToChat(message4)
         val finishChats = chats.allChats.size
         //assert
         assertEquals(finishChats > startChats, true)
